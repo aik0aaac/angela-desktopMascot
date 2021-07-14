@@ -1,6 +1,23 @@
 {
   "name": "app",
   "version": "0.1.0",
+  "description": "Angela's Desktop Mascot App.",
+  "keywords": [
+    "DesktopMascot"
+  ],
+  "bugs": {
+    "url": "https://github.com/aik0aaac/angela-desktopMascot/issues"
+  },
+  "homepage": "https://github.com/aik0aaac/angela-desktopMascot#readme",
+  "author": {
+    "name": "aik0aaac",
+    "url": "https://aik0aaat.hatenadiary.jp/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:aik0aaac/angela-desktopMascot.git"
+  },
+  "license": "SEE LICENSE",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -17,6 +34,8 @@
   "main": "background.js",
   "dependencies": {
     "core-js": "^3.6.5",
+    "flatbuffers": "^2.0.3",
+    "pixi.js": "^6.0.4",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0"
   },
