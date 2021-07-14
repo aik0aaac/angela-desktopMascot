@@ -25,5 +25,9 @@ pnpm-debug.log*
 *.sln
 *.sw?
 
-#Electron-builder output
+# Electron-builder output
 /dist_electron
+
+# SS6Player for pixi.jsライブラリコード
+/src/lib/ss6player-for-web/ssfblib/dist/*
+/src/lib/ss6player-for-web/ss6player-pixi/dist/*

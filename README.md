@@ -38,4 +38,12 @@ WindowsOS と MacOS に対応しています。
 
 # 使用している主要技術スタック
 
+- Electron
+- Vue3
+- [SS6Player for pixi.js](https://github.com/SpriteStudio/SS6PlayerForWeb/tree/master/packages/ss6player-pixi)
+
 # 環境構築手順
+
+1. SS6PlayerForWeb ライブラリのソースコードを導入
+   - 当該リポジトリで使用している [SS6PlayerForWeb](https://github.com/SpriteStudio/SS6PlayerForWeb) は作成時点(2021/07/14)npm モジュールとして公開されていないため、自前でソースコードを調達する必要があります
+   - 詳しい手順は[`/src/lib/ss6player-for-web/README.md`](https://github.com/aik0aaac/angela-desktopMascot/src/lib/ss6player-for-web/README.md)を参照に。
