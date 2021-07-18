@@ -5,6 +5,7 @@
 
     <!-- ウィンドウを動かせるボタン -->
     <move-window-button class="move-window-button" />
+    <a href="https://get.webgl.org/"></a>
   </div>
 </template>
 

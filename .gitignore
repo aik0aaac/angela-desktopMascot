@@ -31,3 +31,6 @@ pnpm-debug.log*
 # SS6Player for pixi.jsライブラリコード
 /src/lib/ss6player-for-web/ssfblib/dist/*
 /src/lib/ss6player-for-web/ss6player-pixi/dist/*
+
+# サンプルプロジェクトのため、アニメーションデータは一時Gitリポジトリから除外
+/public/animation/*
