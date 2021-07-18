@@ -2,7 +2,7 @@
 
 import { app, protocol, BrowserWindow, ipcMain, screen } from "electron";
 import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
-import installExtension, { VUEJS3_DEVTOOLS } from "electron-devtools-installer";
+import installExtension from "electron-devtools-installer";
 import { ipcMainChannnelDefinition } from "./ipc/ipcMainChannelDefinition";
 import { AppConfig } from "./config/appConfig";
 const isDevelopment = process.env.NODE_ENV !== "production";
@@ -28,18 +28,18 @@ async function createWindow() {
         .ELECTRON_NODE_INTEGRATION as unknown as boolean,
       contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION,
     },
-    // transparent: true, // 背景の透明化
-    // frame: false, // フレームを非表示にする
-    // resizable: false, // ウィンドウリサイズ禁止
-    // alwaysOnTop: true, // 常に最前面に表示
-    // hasShadow: false, // デスクトップアプリの影をなくす(MacOS対応)
+    transparent: true, // 背景の透明化
+    frame: false, // フレームを非表示にする
+    resizable: false, // ウィンドウリサイズ禁止
+    alwaysOnTop: true, // 常に最前面に表示
+    hasShadow: false, // デスクトップアプリの影をなくす(MacOS対応)
   });
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
     await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string);
     // テスト環境の場合は、ウィンドウが起動した際にChrome DevToolsを開く
-    if (!process.env.IS_TEST) win.webContents.openDevTools();
+    // if (!process.env.IS_TEST) win.webContents.openDevTools();
   } else {
     createProtocol("app");
     // Load the index.html when not in development
@@ -48,7 +48,7 @@ async function createWindow() {
 
   // マウスイベントを無視
   // mouseenterやmouseleaveといったイベントを検知できるようにするため、`forward`オプションを追加
-  // win.setIgnoreMouseEvents(true, { forward: true });
+  win.setIgnoreMouseEvents(true, { forward: true });
 
   // 画面を右下端に移動
   win.setPosition(
