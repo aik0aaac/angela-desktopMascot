@@ -24,7 +24,8 @@
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
-    "lint": "vue-cli-service lint",
+    "lint": "vue-cli-service lint --no-fix",
+    "lint:fix": "vue-cli-service lint",
     "clean": "rimraf node_modules",
     "electron:build": "vue-cli-service electron:build",
     "electron:serve": "vue-cli-service electron:serve",
@@ -35,13 +36,13 @@
   "dependencies": {
     "core-js": "^3.6.5",
     "flatbuffers": "^2.0.3",
-    "pixi.js": "^6.0.4",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0"
   },
   "devDependencies": {
     "@types/electron-devtools-installer": "^2.2.0",
     "@types/jest": "^24.0.19",
+    "@types/pixi.js": "^5.0.0",
     "@typescript-eslint/eslint-plugin": "^4.18.0",
     "@typescript-eslint/parser": "^4.18.0",
     "@vue/cli-plugin-babel": "~4.5.0",
@@ -60,6 +61,7 @@
     "eslint": "^6.7.2",
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-vue": "^7.0.0",
+    "pixi.js": "6.0.4",
     "prettier": "^2.2.1",
     "rimraf": "^3.0.2",
     "sass": "^1.26.5",
