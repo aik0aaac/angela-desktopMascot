@@ -5,18 +5,20 @@ import {
 } from "@/lib/ss6player-for-web/ss6player-pixi/dist/ss6player-pixi";
 import { AppConfig } from "@/config/appConfig";
 
-let app: PIXI.Application;
+let app: PIXI.Application | null;
 
+/**
+ * アニメーションを再生する。
+ */
 export function animationPlay(): void {
   // Initialize PIXI Application
   // （通常のPIXI.jsアプリケーションの初期化手順）
   app = new PIXI.Application({
     width: AppConfig.windowScreenWidth,
     height: AppConfig.windowScreenHeight,
-    backgroundColor: 0x606060,
-    // transparent: true,
+    transparent: true,
   });
-  document.body.appendChild(app.view);
+  document.getElementById("animation-area")?.appendChild(app.view);
 
   // Initialize SS6 Project (json file path)
   // ssbpをコンバートしたjsonファイルを指定
@@ -31,9 +33,23 @@ export function animationPlay(): void {
     const mySS6Player = new SS6Player(mySS6Project, "Sample", "anime_1");
     // mySS6Player.Setup();
 
-    // mySS6Player.position = new PIXI.Point(320, 480);
-    // mySS6Player.scale = new PIXI.Point(0.5, 0.5);
-    app.stage.addChild(mySS6Player);
+    mySS6Player.position = new PIXI.ObservablePoint(
+      () => {
+        return {};
+      },
+      1,
+      AppConfig.windowScreenWidth / 2,
+      AppConfig.windowScreenHeight / 2
+    );
+    mySS6Player.scale = new PIXI.ObservablePoint(
+      () => {
+        return {};
+      },
+      1,
+      0.5,
+      0.5
+    );
+    app?.stage.addChild(mySS6Player);
 
     // [任意]ユーザーデータコールバック
     // ※Play前に設定しないと開始フレームのデータが漏れるので注意
@@ -52,4 +68,19 @@ export function animationPlay(): void {
     // 再生開始
     mySS6Player.Play();
   };
+}
+
+/**
+ * アニメーションを消去する。
+ */
+export function animationDestroy(): void {
+  if (app) {
+    app.destroy();
+  }
+  app = null;
+
+  const target = document.getElementById("animation-area");
+  while (target?.firstChild) {
+    target.removeChild(target.firstChild);
+  }
 }

@@ -1,10 +1,11 @@
 <template>
   <div class="wrapper"></div>
+  <div id="animation-area"></div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from "vue";
-import { animationPlay } from "@/animation";
+import { defineComponent, onMounted, onBeforeUnmount } from "vue";
+import { animationDestroy, animationPlay } from "@/animation";
 
 export default defineComponent({
   name: "AnimationTest",
@@ -12,6 +13,9 @@ export default defineComponent({
   setup() {
     onMounted(() => {
       animationPlay();
+    });
+    onBeforeUnmount(() => {
+      animationDestroy();
     });
   },
 });
