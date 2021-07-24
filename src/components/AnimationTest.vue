@@ -21,4 +21,7 @@ export default defineComponent({
 });
 </script>
 
-<style scoped lang="sass"></style>
+<style scoped lang="sass">
+#animation-area
+  padding-bottom: calc(val(--base-pixel) * 1)
+</style>

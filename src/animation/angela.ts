@@ -31,6 +31,15 @@ export const angelaPlayAnimeDataList = {
 };
 
 /**
+ * アンジェラ様のループ再生用の全アニメーションデータ
+ */
+export const angelaRoopAnimationDataList = [
+  angelaPlayAnimeDataList.rest1,
+  angelaPlayAnimeDataList.rest2,
+  angelaPlayAnimeDataList.move,
+];
+
+/**
  * アンジェラ様のアニメーションクラス。
  */
 export class AngelaAnimation extends BaseAnimation {
@@ -42,7 +51,7 @@ export class AngelaAnimation extends BaseAnimation {
     super(
       selectorId,
       "/animation/angela/angela.ssfb",
-      angelaPlayAnimeDataList.rest1
+      angelaRoopAnimationDataList
     );
   }
 }
