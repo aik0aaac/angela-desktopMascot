@@ -1,7 +1,7 @@
 <template>
   <enabled-click-element @click="exitApp" class="exit-app">
     <template #contents>
-      <button @click="exitApp" class="exit-app"></button>
+      <button @click="exitApp" class="exit-button"></button>
     </template>
   </enabled-click-element>
 </template>
@@ -34,35 +34,32 @@ export default defineComponent({
 });
 </script>
 
-<style scoped lang="scss">
-.exit-button {
-  display: block;
-  width: var(--button-width);
-  height: var(--button-height);
-  position: relative;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  opacity: var(--control-parts-opacity);
+<style scoped lang="sass">
+.exit-button
+  display: inline-block
+  width: var(--app-bar-button-width)
+  height: var(--app-bar-button-height)
+  position: relative
+  background: transparent
+  border: none
+  cursor: pointer
 
   &::before,
-  &::after {
-    content: "";
-    position: absolute;
-    top: calc(14% - 8px);
-    left: 14%;
-    display: block;
-    width: 100%; /*バツ線の長さ*/
-    height: 8px; /*バツ線の太さ*/
-    background: #fff;
-    transform: rotate(45deg);
-    transform-origin: 0% 50%;
-  }
-  &::after {
-    transform: rotate(-45deg);
-    transform-origin: 100% 50%;
-    left: auto;
-    right: 14%;
-  }
-}
+  &::after
+    content: ""
+    position: absolute
+    top: calc(14% - 2px)
+    left: 14%
+    display: block
+    width: 100% // バツ線の長さ
+    height: 2px // バツ線の太さ
+    background: #fff
+    transform: rotate(45deg)
+    transform-origin: 0% 50%
+
+  &::after
+    transform: rotate(-45deg)
+    transform-origin: 100% 50%
+    left: auto
+    right: 14%
 </style>

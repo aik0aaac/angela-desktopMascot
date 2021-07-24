@@ -6,10 +6,10 @@ export const AppConfig = {
    * Electronウィンドウの横幅。
    * 単位: px
    */
-  windowScreenWidth: 300,
+  windowScreenWidth: 600,
   /**
    * Electronウィンドウの縦幅。
    * 単位: px
    */
-  windowScreenHeight: 200,
+  windowScreenHeight: 400,
 };

@@ -1,0 +1,17 @@
+@charset "utf-8";
+
+// リセットCSS
+@import url(~sanitize.css);
+// 変数系統
+@import "_variables";
+
+// box-sizingプロパティ追加
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  // background-color: #777;
+}

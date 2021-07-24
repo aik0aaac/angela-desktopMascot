@@ -1,24 +1,24 @@
 <template>
-  <div class="wrapper"></div>
   <div id="animation-area"></div>
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, onBeforeUnmount } from "vue";
-import { animationDestroy, animationPlay } from "@/animation";
+import { AngelaAnimation, angelaPlayAnimeDataList } from "@/animation/angela";
 
 export default defineComponent({
   name: "AnimationTest",
   components: {},
   setup() {
+    let testAnimation: AngelaAnimation;
     onMounted(() => {
-      animationPlay();
+      testAnimation = new AngelaAnimation("animation-area");
     });
     onBeforeUnmount(() => {
-      animationDestroy();
+      testAnimation.animationDestroy();
     });
   },
 });
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="sass"></style>

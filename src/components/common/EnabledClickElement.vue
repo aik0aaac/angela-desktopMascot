@@ -1,7 +1,7 @@
 <template>
-  <div v-on:mouseenter="onMouseEnter" v-on:mouseleave="onMouseLeave">
+  <span v-on:mouseenter="onMouseEnter" v-on:mouseleave="onMouseLeave">
     <slot name="contents"></slot>
-  </div>
+  </span>
 </template>
 
 <script lang="ts">
