@@ -12,6 +12,9 @@ protocol.registerSchemesAsPrivileged([
   { scheme: "app", privileges: { secure: true, standard: true } },
 ]);
 
+// デバッグモード(ChromeDevTools使用モード)時の制御
+const isDebug = true;
+
 // Electron Window格納変数。
 let win: BrowserWindow;
 async function createWindow() {
@@ -38,17 +41,19 @@ async function createWindow() {
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
     await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string);
-    // テスト環境の場合は、ウィンドウが起動した際にChrome DevToolsを開く
-    // if (!process.env.IS_TEST) win.webContents.openDevTools();
   } else {
     createProtocol("app");
     // Load the index.html when not in development
     win.loadURL("app://./index.html");
   }
 
-  // マウスイベントを無視
-  // mouseenterやmouseleaveといったイベントを検知できるようにするため、`forward`オプションを追加
-  win.setIgnoreMouseEvents(true, { forward: true });
+  if (!isDebug) {
+    // デバッグモードかつテスト環境の場合は、ウィンドウが起動した際にChrome DevToolsを開く
+    if (!process.env.IS_TEST) win.webContents.openDevTools();
+    // マウスイベントを無視
+    // mouseenterやmouseleaveといったイベントを検知できるようにするため、`forward`オプションを追加
+    win.setIgnoreMouseEvents(true, { forward: true });
+  }
 
   // 画面を右下端に移動
   win.setPosition(
@@ -122,17 +127,23 @@ ipcMain.handle(ipcMainChannnelDefinition.killApp, () => {
 /**
  * マウスイベントの無視状態をOFFにする。
  * ※マウスで要素がクリックできる様にする。
+ * ※デバッグモード時は何もしない。
  */
 ipcMain.handle("enableMouseEvents", () => {
-  win.setIgnoreMouseEvents(false);
+  if (!isDebug) {
+    win.setIgnoreMouseEvents(false);
+  }
 });
 
 /**
  * マウスイベントの無視状態をONにする。
  * ※マウスで要素がクリックできない様にする。
+ * ※デバッグモード時は何もしない。
  */
 ipcMain.handle("disableMouseEvents", () => {
-  win.setIgnoreMouseEvents(true, {
-    forward: true,
-  });
+  if (!isDebug) {
+    win.setIgnoreMouseEvents(true, {
+      forward: true,
+    });
+  }
 });
