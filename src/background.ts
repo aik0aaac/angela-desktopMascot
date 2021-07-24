@@ -33,7 +33,7 @@ async function createWindow() {
     },
     transparent: true, // 背景の透明化
     frame: false, // フレームを非表示にする
-    resizable: false, // ウィンドウリサイズ禁止
+    // resizable: false, // ウィンドウリサイズ禁止
     alwaysOnTop: true, // 常に最前面に表示
     hasShadow: false, // デスクトップアプリの影をなくす(MacOS対応)
   });

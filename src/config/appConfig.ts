@@ -12,4 +12,25 @@ export const AppConfig = {
    * 単位: px
    */
   windowScreenHeight: 400,
+  /**
+   * アニメーション関連の設定値
+   */
+  animation: {
+    /**
+     * アニメーション画像横サイズ。
+     */
+    widthSize: 1000,
+    /**
+     * アニメーション画像縦サイズ。
+     */
+    heightSize: 1000,
+    /**
+     * アニメーション画像表示倍率。
+     */
+    scale: 0.4,
+    /**
+     * アニメーション再生フレームレート。
+     */
+    flameRate: 60,
+  },
 };
