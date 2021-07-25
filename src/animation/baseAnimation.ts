@@ -5,29 +5,7 @@ import {
 } from "@/lib/ss6player-for-web/ss6player-pixi/dist/ss6player-pixi";
 import { AppConfig } from "@/config/appConfig";
 import { GetRandomNumber } from "@/utils";
-
-/**
- * 再生するアニメーション情報のinterface。
- * アニメーションを再生する際に必要な情報が詰まっている。
- */
-export interface PlayAnimationData {
-  /**
-   * アニメーションパッケージ(.ssaeファイル)名。
-   */
-  animePackName: string;
-  /**
-   * アニメーション名。
-   */
-  animeName: string;
-  /**
-   * そのアニメーションの再生倍率。
-   */
-  playSpeed: number;
-  /**
-   * そのアニメーションの終点フレーム。
-   */
-  endFrame: number;
-}
+import { AnimationData, AnimationFlow, TalkData } from "./types";
 
 /**
  * アニメーションクラスのベースとなるクラス。
@@ -39,9 +17,13 @@ export class BaseAnimation {
    */
   public pixiApp: PIXI.Application | null;
   /**
-   * Pixi.jsアプリケーション表示領域のセレクタ(ID)。
+   * アニメーション表示領域のセレクタ(ID)。
    */
-  public selectorId: string;
+  public animationSelectorId: string;
+  /**
+   * トーク表示領域のセレクタ(ID)。
+   */
+  public talkSelectorId: string;
   /**
    * SS6プロジェクト。
    */
@@ -50,63 +32,128 @@ export class BaseAnimation {
    * SS6プレイヤー。
    */
   private ss6Player: SS6Player | null;
+
   /**
-   * アニメーションデータのキュー。
-   * クリックや会話等の割り込みイベントが発生しない限り、下記配列内のアニメーションがループ再生される。
+   * ループ再生用の全アニメーションフロー。
    */
-  private animationQueue: PlayAnimationData[];
+  private roopAnimationFlowList: AnimationFlow[];
   /**
-   * ループ再生用の全アニメーションデータ。
+   * アニメーションフローのキュー。
+   * クリックや会話等の割り込みイベントが発生しない限り、下記配列内のアニメーションセットがループ再生される。
    */
-  private roopAnimationDataList: PlayAnimationData[];
+  private animationFlowQueue: AnimationFlow[];
+  /**
+   * 現在再生中のアニメーションフロー。
+   */
+  private nowPlayAnimationFlow: AnimationFlow;
 
   /**
    * コンストラクタ。
-   * @param selectorId アニメーション表示領域のセレクタ(ID)。
+   * @param animationSelectorId アニメーション表示領域のセレクタ(ID)。
+   * @param talkSelectorId トーク表示領域のセレクタ(ID)。
    * @param ssfbFilePath ssfbファイルパス
-   * @param roopAnimationDataList ループ再生用の全アニメーションデータ。
+   * @param roopAnimationFlowList ループ再生用の全アニメーションフロー。
    */
   constructor(
-    selectorId: string,
+    animationSelectorId: string,
+    talkSelectorId: string,
     ssfbFilePath: string,
-    roopAnimationDataList: PlayAnimationData[]
+    roopAnimationFlowList: AnimationFlow[]
   ) {
     // Pixi.jsアプリケーションの初期化
     this.pixiApp = new PIXI.Application({
-      width: AppConfig.windowScreenWidth,
-      height: AppConfig.windowScreenHeight,
+      width: AppConfig.animation.widthSize * AppConfig.animation.scale,
+      height: AppConfig.animation.heightSize * AppConfig.animation.scale,
       transparent: true,
     });
-    // 指定されたセレクターにPixi.jsアプリケーションを登録
-    this.selectorId = selectorId;
-    document.getElementById(this.selectorId)?.appendChild(this.pixiApp.view);
+    // 指定されたセレクターにPixi.jsアプリケーションを入れ込む
+    this.animationSelectorId = animationSelectorId;
+    document
+      .getElementById(this.animationSelectorId)
+      ?.appendChild(this.pixiApp.view);
+    // トーク表示領域のセレクタ情報を保持
+    this.talkSelectorId = talkSelectorId;
 
-    // アニメーションキューの初期登録
-    this.animationQueue = [...roopAnimationDataList];
+    // アニメーションフローキューの初期登録
+    this.animationFlowQueue = JSON.parse(JSON.stringify(roopAnimationFlowList));
+    // 現在再生中のアニメーションフローをセット
+    this.nowPlayAnimationFlow =
+      this.animationFlowQueue.shift() as AnimationFlow;
     // とりあえずSS6Playerに初期登録
     this.ss6Player = null;
-    // ループ再生用のアニメーションデータを記憶
-    this.roopAnimationDataList = roopAnimationDataList;
+    // ループ再生用のアニメーションセットを記憶
+    this.roopAnimationFlowList = roopAnimationFlowList;
 
-    // セットアップ完了後は、初期アニメーションを流す
+    // セットアップ完了後は、初期処理を流す
     const onComplete = () => {
-      this.initSs6Player();
+      this.init();
     };
     // SS6Project生成
     this.ss6Project = new SS6Project(ssfbFilePath, onComplete);
   }
 
   /**
-   * SS6プレイヤーの初期生成を行い、アニメーションを再生する。
+   * データ構築後の、アニメーションフロー再生の初期処理。
    */
-  private initSs6Player() {
-    // アニメーションキューから情報取得
-    const playAnimeData = this.animationQueue.shift();
+  private init() {
+    // 現在再生中のアニメーションフローから情報取得
+    const playAnimeSet = this.nowPlayAnimationFlow.data.shift();
+
+    // SS6プレイヤーの初期生成を行う
+    this.initSs6Player(playAnimeSet?.animation as AnimationData);
+    // 会話内容の表示
+    this.talkSetup(playAnimeSet?.talk);
+
+    // アニメーション再生開始
+    this.ss6Player?.Play();
+  }
+
+  /**
+   * 初回のアニメーションデータ再生後の処理。
+   */
+  private playNextAnimationSet() {
+    // 現在再生中のアニメーションフローから情報取得
+    const playAnimeSet = this.nowPlayAnimationFlow.data.shift();
+
+    // アニメーションセットがない=アニメーションフロー内の全ての内容を再生し終わった:
+    if (!playAnimeSet) {
+      // 一旦現在再生されているアニメーションを停止
+      this.ss6Player?.Stop();
+      // 新たにアニメーションフローキューに次のアニメーションフローを登録
+      // ※ランダムで生成されたインデックス番号のアニメーションフローがキューに入る
+      const pushIndex = GetRandomNumber(0, this.roopAnimationFlowList.length);
+      this.animationFlowQueue.push(
+        JSON.parse(JSON.stringify(this.roopAnimationFlowList[pushIndex]))
+      );
+
+      // 現在再生中のアニメーションフローを次のものに変更
+      this.nowPlayAnimationFlow =
+        this.animationFlowQueue.shift() as AnimationFlow;
+      // 次の処理へ;
+      this.playNextAnimationSet();
+      // 処理を終了
+      return;
+    }
+
+    // アニメーション再生を変更
+    this.playSs6Player(playAnimeSet?.animation as AnimationData);
+    // 会話内容の表示
+    this.talkSetup(playAnimeSet?.talk as TalkData);
+
+    // アニメーション再生開始
+    this.ss6Player?.Play();
+  }
+
+  /**
+   * SS6プレイヤーの初期生成を行い、アニメーションを再生する。
+   * @param animeData 再生するアニメーションデータ。
+   */
+  private initSs6Player(animeData: AnimationData) {
     // SS6Playerを生成
     this.ss6Player = new SS6Player(
       this.ss6Project,
-      playAnimeData?.animePackName,
-      playAnimeData?.animeName
+      animeData.animePackName,
+      animeData.animeName
     );
     // アニメーション表示位置を指定
     this.ss6Player.position = new PIXI.ObservablePoint(
@@ -115,11 +162,9 @@ export class BaseAnimation {
       },
       1,
       // 画面端より少し左側に配置
-      AppConfig.windowScreenWidth -
-        (AppConfig.animation.widthSize * AppConfig.animation.scale) / 3,
+      (AppConfig.animation.widthSize * AppConfig.animation.scale) / 2,
       // 最下部に合わせる形で配置(画面高さ - そのキャラの幅/2)
-      AppConfig.windowScreenHeight -
-        (AppConfig.animation.heightSize * AppConfig.animation.scale) / 2
+      (AppConfig.animation.heightSize * AppConfig.animation.scale) / 2
     );
     // アニメーションを縮小
     this.ss6Player.scale = new PIXI.ObservablePoint(
@@ -137,51 +182,60 @@ export class BaseAnimation {
     this.ss6Player.SetAnimationFramerate(AppConfig.animation.flameRate, true);
     // 再生速度(SS設定値への乗率、負設定で逆再生)とフレームスキップの可否(初期値はfalse)を設定
     // フレームスキップ： trueで処理落ちでフレームスキップ、falseで処理落ちでもフレームスキップしない
-    this.ss6Player.SetAnimationSpeed(playAnimeData?.playSpeed as number, true);
+    this.ss6Player.SetAnimationSpeed(animeData.playSpeed, true);
     // 始点フレーム番号、終点フレーム番号、ループ回数（0以下で無限ループ）
     // 同時に初期フレームを始点（再生速度がマイナスの場合は終点）フレーム番号に設定
-    this.ss6Player.SetAnimationSection(0, playAnimeData?.endFrame, 1);
+    this.ss6Player.SetAnimationSection(0, animeData.endFrame, 1);
 
     // アニメーション再生終了後にコールバック
     this.ss6Player.SetPlayEndCallback(() => {
-      this.playNextQueueAnimation();
+      this.playNextAnimationSet();
     });
-
-    // 再生開始
-    this.ss6Player.Play();
   }
 
   /**
-   * アニメーションキューに格納されている次のアニメーションを再生する。
+   * アニメーションを再生する。
+   * ※SS6Playerの初期構築が行われた後に、アニメーション内容を変更したい際に本処理を用いる。
+   * @param animeData 再生するアニメーションデータ。
    */
-  private playNextQueueAnimation(): void {
-    // アニメーションキューから情報取得
-    const playAnimeData = this.animationQueue.shift();
+  private playSs6Player(animeData: AnimationData): void {
     // 再生するアニメーションを変更
     this.ss6Player?.Setup(
-      playAnimeData?.animePackName as string,
-      playAnimeData?.animeName as string
+      animeData.animePackName as string,
+      animeData.animeName as string
     );
-
-    // 取得した分、アニメーションキューに次のアニメーションデータを登録
-    // ※ランダムで生成されたインデックス番号のアニメーションデータがキューに入る
-    const pushIndex = GetRandomNumber(0, this.roopAnimationDataList.length);
-    this.animationQueue.push(this.roopAnimationDataList[pushIndex]);
 
     // 再生速度(SS設定値への乗率、負設定で逆再生)とフレームスキップの可否(初期値はfalse)を設定
     // フレームスキップ： trueで処理落ちでフレームスキップ、falseで処理落ちでもフレームスキップしない
-    this.ss6Player?.SetAnimationSpeed(playAnimeData?.playSpeed as number, true);
+    this.ss6Player?.SetAnimationSpeed(animeData.playSpeed, true);
     // 始点フレーム番号、終点フレーム番号、ループ回数（0以下で無限ループ）
     // 同時に初期フレームを始点（再生速度がマイナスの場合は終点）フレーム番号に設定
-    this.ss6Player?.SetAnimationSection(0, playAnimeData?.endFrame, 1);
+    this.ss6Player?.SetAnimationSection(0, animeData.endFrame, 1);
 
     // アニメーション再生終了後にコールバック
     this.ss6Player?.SetPlayEndCallback(() => {
-      this.playNextQueueAnimation();
+      this.playNextAnimationSet();
     });
+  }
 
-    // 再生開始
-    this.ss6Player?.Play();
+  /**
+   * トーク内容の表示を行う。
+   * @param talkData 表示するトークデータ。
+   */
+  private talkSetup(talkData: TalkData | undefined) {
+    const talkElement = document.getElementById(this.talkSelectorId);
+    // もしトーク内容の表示領域がなければ何もしない
+    if (!talkElement) return;
+    // トークデータが空ならトーク表示領域を非表示にして処理終了
+    if (!talkData) {
+      talkElement.style.opacity = "0";
+      return;
+    }
+
+    // 会話領域を表示
+    talkElement.style.opacity = "0.5";
+    // 会話内容を入れ込む
+    talkElement.innerText = talkData.contents;
   }
 
   /**
@@ -189,28 +243,28 @@ export class BaseAnimation {
    * 指定されたアニメーション再生終了後は、アニメーションキューに登録されているアニメーションを再生する。
    * @param playAnimeData: アニメーションデータ。
    */
-  public interruptPlayAnimation(playAnimeData: PlayAnimationData): void {
-    // 一旦現在再生されているアニメーションを停止
-    this.ss6Player?.Stop();
+  // public interruptPlayAnimation(playAnimeData: AnimationSet): void {
+  //   // 一旦現在再生されているアニメーションを停止
+  //   this.ss6Player?.Stop();
 
-    // 再生するアニメーションを変更
-    this.ss6Player?.Setup(playAnimeData.animePackName, playAnimeData.animeName);
+  //   // 再生するアニメーションを変更
+  //   this.ss6Player?.Setup(playAnimeData.animePackName, playAnimeData.animeName);
 
-    // 再生速度(SS設定値への乗率、負設定で逆再生)とフレームスキップの可否(初期値はfalse)を設定
-    // フレームスキップ： trueで処理落ちでフレームスキップ、falseで処理落ちでもフレームスキップしない
-    this.ss6Player?.SetAnimationSpeed(playAnimeData.playSpeed, true);
-    // 始点フレーム番号、終点フレーム番号、ループ回数（0以下で無限ループ）
-    // 同時に初期フレームを始点（再生速度がマイナスの場合は終点）フレーム番号に設定
-    this.ss6Player?.SetAnimationSection(0, playAnimeData.endFrame, 1);
+  //   // 再生速度(SS設定値への乗率、負設定で逆再生)とフレームスキップの可否(初期値はfalse)を設定
+  //   // フレームスキップ： trueで処理落ちでフレームスキップ、falseで処理落ちでもフレームスキップしない
+  //   this.ss6Player?.SetAnimationSpeed(playAnimeData.playSpeed, true);
+  //   // 始点フレーム番号、終点フレーム番号、ループ回数（0以下で無限ループ）
+  //   // 同時に初期フレームを始点（再生速度がマイナスの場合は終点）フレーム番号に設定
+  //   this.ss6Player?.SetAnimationSection(0, playAnimeData.endFrame, 1);
 
-    // アニメーション再生終了後にコールバック
-    this.ss6Player?.SetPlayEndCallback(() => {
-      this.playNextQueueAnimation();
-    });
+  //   // アニメーション再生終了後にコールバック
+  //   this.ss6Player?.SetPlayEndCallback(() => {
+  //     this.playNextQueueAnimation();
+  //   });
 
-    // 再生開始
-    this.ss6Player?.Play();
-  }
+  //   // 再生開始
+  //   this.ss6Player?.Play();
+  // }
 
   /**
    * Pixi.jsアプリケーションを解放(消去)する。
@@ -223,7 +277,7 @@ export class BaseAnimation {
     this.pixiApp = null;
 
     // Pixi.jsアプリケーション表示用のElementも削除
-    const target = document.getElementById(this.selectorId);
+    const target = document.getElementById(this.animationSelectorId);
     while (target?.firstChild) {
       target.removeChild(target.firstChild);
     }

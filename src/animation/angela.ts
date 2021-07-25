@@ -1,10 +1,5 @@
-import * as PIXI from "pixi.js";
-import {
-  SS6Project,
-  SS6Player,
-} from "@/lib/ss6player-for-web/ss6player-pixi/dist/ss6player-pixi";
-import { AppConfig } from "@/config/appConfig";
-import { BaseAnimation, PlayAnimationData } from "./baseAnimation";
+import { BaseAnimation } from "./baseAnimation";
+import { AnimationFlow } from "./types";
 
 /**
  * アンジェラ様で再生可能なアニメーションのリスト。
@@ -31,12 +26,33 @@ export const angelaPlayAnimeDataList = {
 };
 
 /**
- * アンジェラ様のループ再生用の全アニメーションデータ
+ * アンジェラ様のループ再生用の全アニメーションフロー
  */
-export const angelaRoopAnimationDataList = [
-  angelaPlayAnimeDataList.rest1,
-  angelaPlayAnimeDataList.rest2,
-  angelaPlayAnimeDataList.move,
+export const angelaRoopAnimationFlowList: AnimationFlow[] = [
+  {
+    data: [
+      {
+        animation: angelaPlayAnimeDataList.rest1,
+        talk: {
+          contents: "どうしたの?",
+        },
+      },
+    ],
+  },
+  {
+    data: [
+      {
+        animation: angelaPlayAnimeDataList.rest2,
+      },
+    ],
+  },
+  {
+    data: [
+      {
+        animation: angelaPlayAnimeDataList.move,
+      },
+    ],
+  },
 ];
 
 /**
@@ -45,13 +61,15 @@ export const angelaRoopAnimationDataList = [
 export class AngelaAnimation extends BaseAnimation {
   /**
    * コンストラクタ。
-   * @param selectorId アニメーション表示領域のセレクタ(ID)。
+   * @param animationSelectorId アニメーション表示領域のセレクタ(ID)。
+   * @param talkSelectorId トーク表示領域のセレクタ(ID)。
    */
-  constructor(selectorId: string) {
+  constructor(animationSelectorId: string, talkSelectorId: string) {
     super(
-      selectorId,
+      animationSelectorId,
+      talkSelectorId,
       "/animation/angela/angela.ssfb",
-      angelaRoopAnimationDataList
+      angelaRoopAnimationFlowList
     );
   }
 }
