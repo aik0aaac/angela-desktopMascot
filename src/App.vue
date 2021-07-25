@@ -10,8 +10,8 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import MoveWindowButton from "@/components/common/MoveWindowButton.vue";
-import ExitButton from "@/components/common/ExitButton.vue";
+import MoveWindowButton from "@/components/appBar/MoveWindowButton.vue";
+import ExitButton from "@/components/appBar/ExitButton.vue";
 
 export default defineComponent({
   name: "App",
@@ -26,10 +26,10 @@ export default defineComponent({
 // Exitボタン、ウィンドウ移動ボタン全体を包むラッパー
 .app-bar
   width: 100%
-  padding: 0 calc(var(--base-pixel) * 2)
+  padding-right: calc(var(--base-pixel) * 2)
   text-align: right
   opacity: var(--app-bar-opacity)
   // ウィンドウを動かすボタン
   &--move-window-button
-    margin-right: calc(var(--app-bar-button-width) + calc(var(--base-pixel)*1))
+    margin-right: calc(var(--app-bar-button-size) + calc(var(--base-pixel)*1))
 </style>

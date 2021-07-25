@@ -12,7 +12,7 @@
 
 <script lang="ts">
 import { defineComponent, computed } from "vue";
-import EnabledClickElement from "./EnabledClickElement.vue";
+import EnabledClickElement from "../common/EnabledClickElement.vue";
 
 /**
  * Electronの画面を動かせるボタンを提供するコンポーネント。
@@ -45,8 +45,8 @@ export default defineComponent({
 
   display: inline-block
   position: relative
-  width: var(--app-bar-button-width)
-  height: var(--app-bar-button-height)
+  width: var(--app-bar-button-size)
+  height: var(--app-bar-button-size)
   background: none
   border: none
   appearance: none
@@ -57,13 +57,13 @@ export default defineComponent({
     position: absolute
     left: 0
     width: 100%
-    height: calc(var(--app-bar-button-height) / 5)
+    height: calc(var(--app-bar-button-size) / 5)
     background-color: #fff
     border-radius: 3px
     &:nth-of-type(1)
       top: 0
     &:nth-of-type(2)
-      top: calc(var(--app-bar-button-height) / 2 - 1px)
+      top: calc(var(--app-bar-button-size) / 2 - 1px)
     &:nth-of-type(3)
       bottom: 0
 </style>

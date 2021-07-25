@@ -10,7 +10,7 @@
 import { defineComponent } from "vue";
 import { ipcRenderer } from "electron";
 import { ipcMainChannnelDefinition } from "@/ipc/ipcMainChannelDefinition";
-import EnabledClickElement from "./EnabledClickElement.vue";
+import EnabledClickElement from "../common/EnabledClickElement.vue";
 
 /**
  * Electronのアプリ終了ボタンを提供するコンポーネント。
@@ -37,8 +37,8 @@ export default defineComponent({
 <style scoped lang="sass">
 .exit-button
   display: inline-block
-  width: var(--app-bar-button-width)
-  height: var(--app-bar-button-height)
+  width: var(--app-bar-button-size)
+  height: var(--app-bar-button-size)
   position: relative
   background: transparent
   border: none
