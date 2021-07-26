@@ -115,10 +115,10 @@ export class BaseAnimation {
     // 現在再生中のアニメーションフローから情報取得
     const playAnimeSet = this.nowPlayAnimationFlow.data.shift();
 
-    // アニメーションセットがない=アニメーションフロー内の全ての内容を再生し終わった:
+    // アニメーションセットがない=現在再生中のアニメーションフロー内の全ての内容を再生し終わった:
     if (!playAnimeSet) {
       // 一旦現在再生されているアニメーションを停止
-      this.ss6Player?.Stop();
+      this.ss6Player?.Pause();
       // 新たにアニメーションフローキューに次のアニメーションフローを登録
       // ※ランダムで生成されたインデックス番号のアニメーションフローがキューに入る
       const pushIndex = GetRandomNumber(0, this.roopAnimationFlowList.length);
@@ -140,7 +140,7 @@ export class BaseAnimation {
     // 会話内容の表示
     this.talkSetup(playAnimeSet?.talk as TalkData);
 
-    // アニメーション再生開始
+    // アニメーション再生再開
     this.ss6Player?.Play();
   }
 
@@ -185,7 +185,11 @@ export class BaseAnimation {
     this.ss6Player.SetAnimationSpeed(animeData.playSpeed, true);
     // 始点フレーム番号、終点フレーム番号、ループ回数（0以下で無限ループ）
     // 同時に初期フレームを始点（再生速度がマイナスの場合は終点）フレーム番号に設定
-    this.ss6Player.SetAnimationSection(0, animeData.endFrame, 1);
+    this.ss6Player.SetAnimationSection(
+      0,
+      animeData.endFrame,
+      animeData.roopCount ? animeData.roopCount : 1
+    );
 
     // アニメーション再生終了後にコールバック
     this.ss6Player.SetPlayEndCallback(() => {
@@ -210,7 +214,11 @@ export class BaseAnimation {
     this.ss6Player?.SetAnimationSpeed(animeData.playSpeed, true);
     // 始点フレーム番号、終点フレーム番号、ループ回数（0以下で無限ループ）
     // 同時に初期フレームを始点（再生速度がマイナスの場合は終点）フレーム番号に設定
-    this.ss6Player?.SetAnimationSection(0, animeData.endFrame, 1);
+    this.ss6Player?.SetAnimationSection(
+      0,
+      animeData.endFrame,
+      animeData.roopCount ? animeData.roopCount : 1
+    );
 
     // アニメーション再生終了後にコールバック
     this.ss6Player?.SetPlayEndCallback(() => {
@@ -239,32 +247,20 @@ export class BaseAnimation {
   }
 
   /**
-   * 割り込みで指定されたアニメーションを再生する。
-   * 指定されたアニメーション再生終了後は、アニメーションキューに登録されているアニメーションを再生する。
-   * @param playAnimeData: アニメーションデータ。
+   * 割り込みで指定されたアニメーションフローを再生する。
+   * 指定されたアニメーションフロー再生終了後は、アニメーションフローキューに登録されているアニメーションを再生する。
+   * @param animeFlow: アニメーションフローデータ。
    */
-  // public interruptPlayAnimation(playAnimeData: AnimationSet): void {
-  //   // 一旦現在再生されているアニメーションを停止
-  //   this.ss6Player?.Stop();
-
-  //   // 再生するアニメーションを変更
-  //   this.ss6Player?.Setup(playAnimeData.animePackName, playAnimeData.animeName);
-
-  //   // 再生速度(SS設定値への乗率、負設定で逆再生)とフレームスキップの可否(初期値はfalse)を設定
-  //   // フレームスキップ： trueで処理落ちでフレームスキップ、falseで処理落ちでもフレームスキップしない
-  //   this.ss6Player?.SetAnimationSpeed(playAnimeData.playSpeed, true);
-  //   // 始点フレーム番号、終点フレーム番号、ループ回数（0以下で無限ループ）
-  //   // 同時に初期フレームを始点（再生速度がマイナスの場合は終点）フレーム番号に設定
-  //   this.ss6Player?.SetAnimationSection(0, playAnimeData.endFrame, 1);
-
-  //   // アニメーション再生終了後にコールバック
-  //   this.ss6Player?.SetPlayEndCallback(() => {
-  //     this.playNextQueueAnimation();
-  //   });
-
-  //   // 再生開始
-  //   this.ss6Player?.Play();
-  // }
+  public interruptPlayAnimation(animeFlow: AnimationFlow): void {
+    // 一旦現在再生されているアニメーションを停止
+    this.ss6Player?.Pause();
+    // 現在再生中のアニメーションをアニメーションフローキューの先頭へ退避
+    this.animationFlowQueue.unshift(this.nowPlayAnimationFlow);
+    // 現在再生中のアニメーションを割り込みで指定されたアニメーションフローに変更
+    this.nowPlayAnimationFlow = animeFlow;
+    // アニメーション再生
+    this.playNextAnimationSet();
+  }
 
   /**
    * Pixi.jsアプリケーションを解放(消去)する。

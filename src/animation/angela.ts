@@ -3,6 +3,7 @@ import { AnimationFlow } from "./types";
 
 /**
  * アンジェラ様で再生可能なアニメーションのリスト。
+ * ※ループ再生数は入っていないため、各アニメーションデータ内部で指定可能。
  */
 export const angelaPlayAnimeDataList = {
   rest1: {
@@ -32,9 +33,9 @@ export const angelaRoopAnimationFlowList: AnimationFlow[] = [
   {
     data: [
       {
-        animation: angelaPlayAnimeDataList.rest1,
-        talk: {
-          contents: "どうしたの?",
+        animation: {
+          ...angelaPlayAnimeDataList.rest1,
+          roopCount: 3,
         },
       },
     ],
@@ -42,18 +43,42 @@ export const angelaRoopAnimationFlowList: AnimationFlow[] = [
   {
     data: [
       {
-        animation: angelaPlayAnimeDataList.rest2,
+        animation: {
+          ...angelaPlayAnimeDataList.rest2,
+          roopCount: 2,
+        },
       },
     ],
   },
   {
     data: [
       {
-        animation: angelaPlayAnimeDataList.move,
+        animation: {
+          ...angelaPlayAnimeDataList.move,
+          roopCount: 5,
+        },
       },
     ],
   },
 ];
+
+export const angelaTalkData = {
+  // ネズミ
+  rats: {
+    data: [
+      {
+        animation: {
+          ...angelaPlayAnimeDataList.move,
+          roopCount: 5,
+        },
+        talk: {
+          contents:
+            "「ネズミ」ね…程度の低い連中というのは振る舞いを見ても分かったわ。",
+        },
+      },
+    ],
+  },
+};
 
 /**
  * アンジェラ様のアニメーションクラス。

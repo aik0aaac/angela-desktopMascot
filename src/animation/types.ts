@@ -15,6 +15,7 @@
  *        animeName: "default",
  *        playSpeed: 0.6,
  *        endFlame: 40,
+ *        roopCount: 2, // 存在しなければ1回ループするのみ
  *      },
  *      talk: {
  *        contents: "初回の会話内容が入ります。"
@@ -79,6 +80,11 @@ export interface AnimationData {
    * そのアニメーションの終点フレーム。
    */
   endFrame: number;
+  /**
+   * そのアニメーションのループ回数。
+   * 指定されなければ1回のみ再生される。
+   */
+  roopCount?: number;
 }
 
 /**
