@@ -5,7 +5,10 @@
 
   <!-- コミュニケーション欄 -->
   <div class="communication">
+    <!-- 会話ボタン -->
     <talk-button />
+    <!-- ストーリー進行度変更 -->
+    <change-chapter />
   </div>
 </template>
 
@@ -13,12 +16,14 @@
 import { defineComponent } from "vue";
 import AnimationArea from "@/components/animation/AnimationArea.vue";
 import TalkButton from "@/components/communication/TalkButton.vue";
+import ChangeChapter from "@/components/communication/ChangeChapter.vue";
 
 export default defineComponent({
   name: "Home",
   components: {
     AnimationArea,
     TalkButton,
+    ChangeChapter,
   },
 });
 </script>
@@ -39,4 +44,5 @@ export default defineComponent({
   position: absolute
   right: calc(var(--base-pixel) * 2)
   bottom: 5%
+  text-align: right
 </style>

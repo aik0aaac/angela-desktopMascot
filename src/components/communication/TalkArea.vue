@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, onBeforeUnmount } from "vue";
+import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "TalkArea",

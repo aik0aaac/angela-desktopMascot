@@ -257,7 +257,7 @@ export class BaseAnimation {
     // 現在再生中のアニメーションをアニメーションフローキューの先頭へ退避
     this.animationFlowQueue.unshift(this.nowPlayAnimationFlow);
     // 現在再生中のアニメーションを割り込みで指定されたアニメーションフローに変更
-    this.nowPlayAnimationFlow = animeFlow;
+    this.nowPlayAnimationFlow = JSON.parse(JSON.stringify(animeFlow));
     // アニメーション再生
     this.playNextAnimationSet();
   }

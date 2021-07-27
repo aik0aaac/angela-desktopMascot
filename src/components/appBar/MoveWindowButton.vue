@@ -1,5 +1,5 @@
 <template>
-  <enabled-click-element @click="exitApp" class="exit-app">
+  <enabled-click-element class="exit-app">
     <template #contents>
       <button v-if="isDisplayMoveButton" class="move-window">
         <span></span>
@@ -18,10 +18,10 @@ import EnabledClickElement from "../common/EnabledClickElement.vue";
  * Electronの画面を動かせるボタンを提供するコンポーネント。
  */
 export default defineComponent({
+  name: "MoveWindowButton",
   components: {
     EnabledClickElement,
   },
-  name: "MoveWindowButton",
   setup() {
     /**
      * ウィンドウ移動ボタンを表示させるかどうか。
