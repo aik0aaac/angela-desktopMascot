@@ -1,5 +1,5 @@
 <template>
-  <enabled-click-element @click="exitApp">
+  <enabled-click-element>
     <template #contents>
       <button @click="onClickTalkButton" class="talk-button"></button>
     </template>
@@ -7,20 +7,25 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, inject } from "vue";
 import EnabledClickElement from "../common/EnabledClickElement.vue";
+import { AnimationStoreKey, AnimationStore } from "@/store/animation";
 
 /**
  * 会話トリガーボタンコンポーネント。
  */
 export default defineComponent({
+  name: "TalkButton",
   components: {
     EnabledClickElement,
   },
-  name: "TalkButton",
   setup() {
+    // アニメーション再生&管理インスタンス用のStore処理を取得
+    const animationStore = inject(AnimationStoreKey) as AnimationStore;
+
+    // トークボタンクリック時の処理
     const onClickTalkButton = () => {
-      console.log("talkbutton click");
+      animationStore.talk();
     };
 
     return { onClickTalkButton };
@@ -36,5 +41,6 @@ export default defineComponent({
   position: relative
   background: #aa0
   border: none
+  opacity: var(--opacity)
   cursor: pointer
 </style>

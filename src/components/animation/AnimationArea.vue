@@ -7,9 +7,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, onBeforeUnmount } from "vue";
-import { AngelaAnimation } from "@/animation/angela";
-import TalkArea from "@/components/animation/TalkArea.vue";
+import { defineComponent, onMounted, onBeforeUnmount, inject } from "vue";
+import TalkArea from "@/components/communication/TalkArea.vue";
+import { AnimationStoreKey, AnimationStore } from "@/store/animation";
 
 export default defineComponent({
   name: "AnimationArea",
@@ -17,22 +17,27 @@ export default defineComponent({
     TalkArea,
   },
   setup() {
-    let testAnimation: AngelaAnimation;
+    // アニメーション再生&管理インスタンス用のStore処理を取得
+    const animationStore = inject(AnimationStoreKey) as AnimationStore;
+
     onMounted(() => {
-      testAnimation = new AngelaAnimation("animation-area", "talk-area");
+      animationStore.init();
     });
     onBeforeUnmount(() => {
-      testAnimation.animationDestroy();
+      animationStore.destroy();
     });
   },
 });
 </script>
 
 <style lang="sass" scoped>
+#animation-area
+  width: 100%
+  text-align: right
 // トーク領域
 .talk-area-wrapper
   display: inline-block
   position: absolute
   top: calc(var(--base-pixel) * 2)
-  left: calc(var(--base-pixel) * 10 * -1)
+  right: calc(var(--base-pixel) * 80)
 </style>

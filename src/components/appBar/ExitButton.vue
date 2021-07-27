@@ -1,5 +1,5 @@
 <template>
-  <enabled-click-element @click="exitApp" class="exit-app">
+  <enabled-click-element class="exit-app">
     <template #contents>
       <button @click="exitApp" class="exit-button"></button>
     </template>
@@ -16,10 +16,10 @@ import EnabledClickElement from "../common/EnabledClickElement.vue";
  * Electronのアプリ終了ボタンを提供するコンポーネント。
  */
 export default defineComponent({
+  name: "ExitButton",
   components: {
     EnabledClickElement,
   },
-  name: "ExitButton",
   setup() {
     /**
      * アプリ終了処理。
