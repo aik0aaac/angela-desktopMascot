@@ -1,5 +1,6 @@
 <template>
-  <section id="talk-area"></section>
+  <p id="talk-topic-area"></p>
+  <p id="talk-area"></p>
 </template>
 
 <script lang="ts">
@@ -12,9 +13,21 @@ export default defineComponent({
 </script>
 
 <style lang="sass" scoped>
+#talk-topic-area
+  display: inline-block
+  max-width: var(--max-width)
+  margin: calc(var(--base-pixel) * 4) 0 0 0
+  padding: calc(var(--base-pixel) * 2)
+  color: white
+  font-size: var(--topic-font-size)
+  text-align: left
+  background-color: black
+  opacity: 0
+  transition: .3s
+
 #talk-area
   max-width: var(--max-width)
-  margin-top: calc(var(--base-pixel) * 4)
+  margin: 0
   padding: calc(var(--base-pixel) * 4)
   color: white
   font-size: var(--font-size)

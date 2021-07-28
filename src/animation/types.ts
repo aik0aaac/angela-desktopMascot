@@ -18,6 +18,7 @@
  *        roopCount: 2, // 存在しなければ1回ループするのみ
  *      },
  *      talk: {
+ *        topic: "話題にする事柄が入ります。(例: 街灯事務所)"
  *        contents: "初回の会話内容が入ります。"
  *      }
  *    },
@@ -91,6 +92,10 @@ export interface AnimationData {
  * トーク情報。
  */
 export interface TalkData {
+  /**
+   * 話題にする事柄。
+   */
+  topic: string;
   /**
    * トーク内容。
    */

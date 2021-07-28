@@ -55,7 +55,11 @@ export const useAnimationStore = (): IUseAnimation => {
 
   // アニメーション再生インスタンスの初期化処理を行う。
   const init = () => {
-    state.instance = new AngelaAnimation("animation-area", "talk-area");
+    state.instance = new AngelaAnimation(
+      "animation-area",
+      "talk-area",
+      "talk-topic-area"
+    );
   };
   // アニメーション再生インスタンスの削除処理を行う。
   const destroy = () => {
