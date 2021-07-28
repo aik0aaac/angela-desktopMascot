@@ -25,6 +25,10 @@ export class BaseAnimation {
    */
   public talkSelectorId: string;
   /**
+   * トーク見出し表示領域のセレクタ(ID)。
+   */
+  public talkTopicSelectorId: string;
+  /**
    * SS6プロジェクト。
    */
   public ss6Project: SS6Project;
@@ -51,12 +55,14 @@ export class BaseAnimation {
    * コンストラクタ。
    * @param animationSelectorId アニメーション表示領域のセレクタ(ID)。
    * @param talkSelectorId トーク表示領域のセレクタ(ID)。
+   * @param talkTopicSelectorId トーク見出し領域のセレクタ(ID)。
    * @param ssfbFilePath ssfbファイルパス
    * @param roopAnimationFlowList ループ再生用の全アニメーションフロー。
    */
   constructor(
     animationSelectorId: string,
     talkSelectorId: string,
+    talkTopicSelectorId: string,
     ssfbFilePath: string,
     roopAnimationFlowList: AnimationFlow[]
   ) {
@@ -73,6 +79,7 @@ export class BaseAnimation {
       ?.appendChild(this.pixiApp.view);
     // トーク表示領域のセレクタ情報を保持
     this.talkSelectorId = talkSelectorId;
+    this.talkTopicSelectorId = talkTopicSelectorId;
 
     // アニメーションフローキューの初期登録
     this.animationFlowQueue = JSON.parse(JSON.stringify(roopAnimationFlowList));
@@ -232,11 +239,13 @@ export class BaseAnimation {
    */
   private talkSetup(talkData: TalkData | undefined) {
     const talkElement = document.getElementById(this.talkSelectorId);
-    // もしトーク内容の表示領域がなければ何もしない
-    if (!talkElement) return;
+    const talkTopicElement = document.getElementById(this.talkTopicSelectorId);
+    // もしトーク内容の表示領域&見出し内容の表示領域がなければ何もしない
+    if (!talkElement || !talkTopicElement) return;
     // トークデータが空ならトーク表示領域を非表示にして処理終了
     if (!talkData) {
       talkElement.style.opacity = "0";
+      talkTopicElement.style.opacity = "0";
       return;
     }
 
@@ -244,6 +253,10 @@ export class BaseAnimation {
     talkElement.style.opacity = "0.5";
     // 会話内容を入れ込む
     talkElement.innerText = talkData.contents;
+    // 見出し領域を表示
+    talkTopicElement.style.opacity = "0.5";
+    // 見出し内容を入れ込む
+    talkTopicElement.innerText = talkData.topic;
   }
 
   /**

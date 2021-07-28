@@ -41,7 +41,7 @@ export const angelaAnimationList = {
     playSpeed: 1,
     endFrame: 40,
   },
-  // げんなりしながら話す
+  // 微笑みながら話す
   bitSmileTalk: {
     animePackName: "base",
     animeName: "bitSmileTalk",
@@ -55,10 +55,24 @@ export const angelaAnimationList = {
     playSpeed: 1,
     endFrame: 40,
   },
-  // ジト目で見つつ話す
-  scornTalk: {
+  // 意外そうにしながら話す
+  surprisingTalk: {
     animePackName: "base",
-    animeName: "scornTalk",
+    animeName: "surprisingTalk",
+    playSpeed: 1,
+    endFrame: 40,
+  },
+  // ぼんやりした顔で話す
+  vagueTalk: {
+    animePackName: "base",
+    animeName: "vagueTalk",
+    playSpeed: 1,
+    endFrame: 40,
+  },
+  // 決意を抱いた顔で話す
+  determinatingTalk: {
+    animePackName: "base",
+    animeName: "determinatingTalk",
     playSpeed: 1,
     endFrame: 40,
   },
