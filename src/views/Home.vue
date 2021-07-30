@@ -43,6 +43,6 @@ export default defineComponent({
 .communication
   position: absolute
   right: calc(var(--base-pixel) * 2)
-  bottom: 5%
+  bottom: 10%
   text-align: right
 </style>
