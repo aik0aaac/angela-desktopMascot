@@ -1,6 +1,6 @@
 {
   "name": "angela-desktop-mascot",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Angela's Desktop Mascot App.",
   "keywords": [
     "DesktopMascot"
@@ -26,7 +26,7 @@
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint --no-fix",
     "lint:fix": "vue-cli-service lint",
-    "clean": "rimraf node_modules",
+    "clean": "rimraf node_modules && rimraf dist_electron",
     "electron:build": "vue-cli-service electron:build",
     "electron:serve": "vue-cli-service electron:serve",
     "postinstall": "electron-builder install-app-deps",
