@@ -13,7 +13,8 @@ protocol.registerSchemesAsPrivileged([
 ]);
 
 // デバッグモード(ChromeDevTools使用モード)時の制御
-const isDebug = true;
+const isDebug = false;
+// const isDebug = true;
 
 // Electron Window格納変数。
 let win: BrowserWindow;
@@ -33,7 +34,7 @@ async function createWindow() {
     },
     transparent: true, // 背景の透明化
     frame: false, // フレームを非表示にする
-    // resizable: false, // ウィンドウリサイズ禁止
+    resizable: isDebug ? false : true, // ウィンドウリサイズ禁止
     alwaysOnTop: true, // 常に最前面に表示
     hasShadow: false, // デスクトップアプリの影をなくす(MacOS対応)
   });
@@ -47,10 +48,11 @@ async function createWindow() {
     win.loadURL("app://./index.html");
   }
 
-  if (!isDebug) {
+  if (isDebug) {
     // デバッグモードかつテスト環境の場合は、ウィンドウが起動した際にChrome DevToolsを開く
-    if (!process.env.IS_TEST) win.webContents.openDevTools();
-    // マウスイベントを無視
+    if (process.env.IS_TEST) win.webContents.openDevTools();
+  } else {
+    // デバッグモード以外の場合はマウスイベントを無視
     // mouseenterやmouseleaveといったイベントを検知できるようにするため、`forward`オプションを追加
     win.setIgnoreMouseEvents(true, { forward: true });
   }

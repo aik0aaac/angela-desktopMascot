@@ -29,51 +29,51 @@ export const angelaAnimationList = {
    **************************************************/
   // 普通に話す
   normallyTalk: {
-    animePackName: "base",
+    animePackName: "talk",
     animeName: "normallyTalk",
-    playSpeed: 1,
+    playSpeed: 0.6,
     endFrame: 40,
   },
   // 普通に話す(こちらを見ながら)
   normallyTalk_LookingHere: {
-    animePackName: "base",
+    animePackName: "talk",
     animeName: "normallyTalk_LookingHere",
-    playSpeed: 1,
+    playSpeed: 0.6,
     endFrame: 40,
   },
   // 微笑みながら話す
   bitSmileTalk: {
-    animePackName: "base",
+    animePackName: "talk",
     animeName: "bitSmileTalk",
-    playSpeed: 1,
+    playSpeed: 0.6,
     endFrame: 40,
   },
   // げんなりしながら話す
   satiatedTalk: {
-    animePackName: "base",
+    animePackName: "talk",
     animeName: "satiatedTalk",
-    playSpeed: 1,
+    playSpeed: 0.6,
     endFrame: 40,
   },
   // 意外そうにしながら話す
   surprisingTalk: {
-    animePackName: "base",
+    animePackName: "talk",
     animeName: "surprisingTalk",
-    playSpeed: 1,
+    playSpeed: 0.6,
     endFrame: 40,
   },
   // ぼんやりした顔で話す
   vagueTalk: {
-    animePackName: "base",
+    animePackName: "talk",
     animeName: "vagueTalk",
-    playSpeed: 1,
+    playSpeed: 0.6,
     endFrame: 40,
   },
   // 決意を抱いた顔で話す
   determinatingTalk: {
-    animePackName: "base",
+    animePackName: "talk",
     animeName: "determinatingTalk",
-    playSpeed: 1,
+    playSpeed: 0.6,
     endFrame: 40,
   },
 };

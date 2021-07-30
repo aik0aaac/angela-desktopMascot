@@ -39,7 +39,10 @@ export default defineComponent({
   width: var(--talk-button-size)
   height: var(--talk-button-size)
   position: relative
-  background: #aa0
+  background-color: rgba(0, 0, 0, 0)
+  background-image: url("~@/assets/img/balloon.png")
+  background-repeat: no-repeat
+  background-size: cover
   border: none
   opacity: var(--opacity)
   cursor: pointer
