@@ -9,7 +9,7 @@ export const angelaTalkData = {
         {
           animation: {
             ...angelaAnimationList.normallyTalk_LookingHere,
-            roopCount: 5,
+            roopCount: 3,
           },
           talk: {
             topic: "ネズミ",
@@ -20,7 +20,7 @@ export const angelaTalkData = {
         {
           animation: {
             ...angelaAnimationList.normallyTalk,
-            roopCount: 5,
+            roopCount: 3,
           },
           talk: {
             topic: "ネズミ",
@@ -35,7 +35,7 @@ export const angelaTalkData = {
         {
           animation: {
             ...angelaAnimationList.bitSmileTalk,
-            roopCount: 5,
+            roopCount: 3,
           },
           talk: {
             topic: "ユン事務所",
@@ -45,7 +45,7 @@ export const angelaTalkData = {
         {
           animation: {
             ...angelaAnimationList.satiatedTalk,
-            roopCount: 5,
+            roopCount: 3,
           },
           talk: {
             topic: "ユン事務所",
@@ -61,7 +61,7 @@ export const angelaTalkData = {
         {
           animation: {
             ...angelaAnimationList.satiatedTalk,
-            roopCount: 5,
+            roopCount: 3,
           },
           talk: {
             topic: "鉄の兄弟",
@@ -72,7 +72,7 @@ export const angelaTalkData = {
         {
           animation: {
             ...angelaAnimationList.surprisingTalk,
-            roopCount: 5,
+            roopCount: 3,
           },
           talk: {
             topic: "鉄の兄弟",
@@ -83,7 +83,7 @@ export const angelaTalkData = {
         {
           animation: {
             ...angelaAnimationList.satiatedTalk,
-            roopCount: 5,
+            roopCount: 3,
           },
           talk: {
             topic: "鉄の兄弟",
@@ -98,7 +98,7 @@ export const angelaTalkData = {
         {
           animation: {
             ...angelaAnimationList.bitSmileTalk,
-            roopCount: 5,
+            roopCount: 3,
           },
           talk: {
             topic: "釣事務所",
@@ -136,7 +136,7 @@ export const angelaTalkData = {
         {
           animation: {
             ...angelaAnimationList.determinatingTalk,
-            roopCount: 5,
+            roopCount: 3,
           },
           talk: {
             topic: "釣事務所",
@@ -182,7 +182,7 @@ export const angelaTalkData = {
         {
           animation: {
             ...angelaAnimationList.normallyTalk,
-            roopCount: 5,
+            roopCount: 3,
           },
           talk: {
             topic: "ピエールのミートパイ",
@@ -220,7 +220,7 @@ export const angelaTalkData = {
         {
           animation: {
             ...angelaAnimationList.satiatedTalk,
-            roopCount: 5,
+            roopCount: 3,
           },
           talk: {
             topic: "街灯事務所",
@@ -235,7 +235,7 @@ export const angelaTalkData = {
         {
           animation: {
             ...angelaAnimationList.normallyTalk,
-            roopCount: 5,
+            roopCount: 3,
           },
           talk: {
             topic: "街灯事務所",
@@ -262,7 +262,7 @@ export const angelaTalkData = {
         {
           animation: {
             ...angelaAnimationList.satiatedTalk,
-            roopCount: 5,
+            roopCount: 3,
           },
           talk: {
             topic: "街灯事務所@ルル",

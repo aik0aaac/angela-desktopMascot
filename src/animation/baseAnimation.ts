@@ -267,8 +267,8 @@ export class BaseAnimation {
   public interruptPlayAnimation(animeFlow: AnimationFlow): void {
     // 一旦現在再生されているアニメーションを停止
     this.ss6Player?.Pause();
-    // 現在再生中のアニメーションをアニメーションフローキューの先頭へ退避
-    this.animationFlowQueue.unshift(this.nowPlayAnimationFlow);
+    // 再生停止した分、待機モーションアニメーションを新たにアニメーションフローキューの先頭へ退避
+    this.animationFlowQueue.unshift(this.roopAnimationFlowList[0]);
     // 現在再生中のアニメーションを割り込みで指定されたアニメーションフローに変更
     this.nowPlayAnimationFlow = JSON.parse(JSON.stringify(animeFlow));
     // アニメーション再生
