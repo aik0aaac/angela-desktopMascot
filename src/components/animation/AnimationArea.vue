@@ -1,8 +1,9 @@
 <template>
-  <section id="animation-area">
+  <section class="animation-area">
     <div class="talk-area-wrapper">
       <talk-area />
     </div>
+    <div id="animation-area"></div>
   </section>
 </template>
 
@@ -31,7 +32,7 @@ export default defineComponent({
 </script>
 
 <style lang="sass" scoped>
-#animation-area
+.animation-area
   width: 100%
   text-align: right
 // トーク領域
