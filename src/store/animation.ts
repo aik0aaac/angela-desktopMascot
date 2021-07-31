@@ -1,19 +1,24 @@
 import { InjectionKey, reactive } from "vue";
-import { AngelaAnimation } from "@/animation/angela";
-import { angelaTalkData } from "@/animation/angela/talkData";
 import {
   chapterDefinitionList,
   chapterType,
   defaultChapter,
 } from "@/definition/chapter";
 import { GetRandomNumber } from "@/utils";
+import { BaseAnimation } from "@/animation/baseAnimation";
+import { CharacterData } from "@/animation/types";
+import { characterList, defaultCharacter } from "@/definition/character";
 
 interface IAnimationState {
   /**
    * アニメーション再生インスタンス。
    * 初期値はNull。
    */
-  instance: AngelaAnimation | null;
+  instance: BaseAnimation | null;
+  /**
+   * 現在再生中のキャラクター。
+   */
+  character: CharacterData;
   /**
    * 現在のストーリー進行度。
    */
@@ -41,6 +46,14 @@ interface IUseAnimation {
    * 現在のストーリー進行度を変更。
    */
   changeChapter: (chapter: chapterType) => void;
+  /**
+   * 現在のキャラクターを取得。
+   */
+  getCharacter: () => CharacterData;
+  /**
+   * 現在のキャラクターを変更。
+   */
+  changeCharacter: (index: number) => void;
 }
 
 /**
@@ -50,15 +63,18 @@ export const useAnimationStore = (): IUseAnimation => {
   // 状態
   const state = reactive<IAnimationState>({
     instance: null,
+    character: defaultCharacter,
     chapter: defaultChapter,
   });
 
   // アニメーション再生インスタンスの初期化処理を行う。
   const init = () => {
-    state.instance = new AngelaAnimation(
+    state.instance = new BaseAnimation(
       "animation-area",
       "talk-area",
-      "talk-topic-area"
+      "talk-topic-area",
+      state.character.ssfbFilePath,
+      state.character.roopAnimationList
     );
   };
   // アニメーション再生インスタンスの削除処理を行う。
@@ -72,13 +88,27 @@ export const useAnimationStore = (): IUseAnimation => {
     // 現在のストーリー進行度の中から、ランダムな会話が選定される
     switch (state.chapter) {
       case chapterDefinitionList[0]: {
-        const index = GetRandomNumber(0, angelaTalkData.canard.length);
-        state.instance?.interruptPlayAnimation(angelaTalkData.canard[index]);
+        // const index = GetRandomNumber(0, angelaTalkData.canard.length);
+        // state.instance?.interruptPlayAnimation(angelaTalkData.canard[index]);
+        const index = GetRandomNumber(
+          0,
+          state.character.talkData.canard.length
+        );
+        state.instance?.interruptPlayAnimation(
+          state.character.talkData.canard[index]
+        );
         break;
       }
       case chapterDefinitionList[1]: {
-        const index = GetRandomNumber(0, angelaTalkData.urbanMyth.length);
-        state.instance?.interruptPlayAnimation(angelaTalkData.urbanMyth[index]);
+        // const index = GetRandomNumber(0, angelaTalkData.urbanMyth.length);
+        // state.instance?.interruptPlayAnimation(angelaTalkData.urbanMyth[index]);
+        const index = GetRandomNumber(
+          0,
+          state.character.talkData.urbanMyth.length
+        );
+        state.instance?.interruptPlayAnimation(
+          state.character.talkData.urbanMyth[index]
+        );
         break;
       }
       default: {
@@ -96,12 +126,25 @@ export const useAnimationStore = (): IUseAnimation => {
     state.chapter = chapter;
   };
 
+  // 現在のキャラクターを取得。
+  const getCharacter = (): CharacterData => {
+    return state.character;
+  };
+  // 現在のキャラクターを変更。
+  const changeCharacter = (index: number) => {
+    state.character = characterList[index];
+    destroy();
+    init();
+  };
+
   return {
     init,
     destroy,
     talk,
     getChapter,
     changeChapter,
+    getCharacter,
+    changeCharacter,
   };
 };
 

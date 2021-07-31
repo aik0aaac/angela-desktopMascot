@@ -279,6 +279,8 @@ export class BaseAnimation {
    * Pixi.jsアプリケーションを解放(消去)する。
    */
   public animationDestroy(): void {
+    // アニメーションを一旦停止
+    this.ss6Player?.Stop();
     // Pixi.jsアプリケーションが存在すれば、destroy
     if (this.pixiApp) {
       this.pixiApp.destroy();

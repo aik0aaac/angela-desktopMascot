@@ -1,5 +1,5 @@
 /**
- * データ構造の説明:
+ * アニメーション関連のデータ構造の説明:
  * - AnimationFlow: 再生するアニメーションフロー
  * - AnimationSet: 再生するアニメーションセット
  * - AnimationData: 再生するアニメーションデータ
@@ -100,4 +100,22 @@ export interface TalkData {
    * トーク内容。
    */
   contents: string;
+}
+
+/**
+ * キャラ関連のデータ。
+ */
+export interface CharacterData {
+  /**
+   * ssfbファイルパス。
+   */
+  ssfbFilePath: string;
+  /**
+   * ループ再生用のアニメーショフローンデータ。
+   */
+  roopAnimationList: AnimationFlow[];
+  /**
+   * 会話データ。
+   */
+  talkData: any;
 }
