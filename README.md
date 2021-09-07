@@ -72,7 +72,7 @@ WindowsOS と MacOS に対応しています。
 
 本リポジトリ作成への系譜を記した LOG を置いておきます。  
 本リポジトリ理解の際に参考になる…かもしれません。  
-[LOG(準備中)]()
+[制作過程LOG](https://aik0aaac.github.io/angela-desktopMascot/log)
 
 ## 環境構築手順
 
