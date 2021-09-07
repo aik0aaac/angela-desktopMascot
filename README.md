@@ -20,7 +20,7 @@ WindowsOS と MacOS に対応しています。
 
 # 画面説明
 
-![説明用画像](https://github.com/aik0aaac/angela-desktopMascot/blob/images/images/description.jpg)
+![説明用画像](https://github.com/aik0aaac/angela-desktopMascot/blob/images/images/description.jpg?raw=true)
 
 - 終了ボタン: 本アプリケーションを終了します
 - 移動ボタン(Mac OS のみ): ドラッグ&ドロップでウィンドウを移動できます。
@@ -70,7 +70,11 @@ WindowsOS と MacOS に対応しています。
 - SpriteStudio
 - [SS6Player for pixi.js](https://github.com/SpriteStudio/SS6PlayerForWeb/tree/master/packages/ss6player-pixi)
 
-# 環境構築手順
+本リポジトリ作成への系譜を記した LOG を置いておきます。  
+本リポジトリ理解の際に参考になる…かもしれません。  
+[LOG(準備中)]()
+
+## 環境構築手順
 
 1. SS6PlayerForWeb ライブラリのソースコードを導入
    - 当該リポジトリで使用している [SS6PlayerForWeb](https://github.com/SpriteStudio/SS6PlayerForWeb) は作成時点(2021/07/14)npm モジュールとして公開されていないため、自前でソースコードを調達する必要があります

@@ -34,3 +34,6 @@ pnpm-debug.log*
 
 # サンプルプロジェクトのため、アニメーションデータは一時Gitリポジトリから除外
 /public/animation/*
+
+# TODOリストはローカルにのみ保持
+todo.md
