@@ -70,10 +70,6 @@ WindowsOS と MacOS に対応しています。
 - SpriteStudio
 - [SS6Player for pixi.js](https://github.com/SpriteStudio/SS6PlayerForWeb/tree/master/packages/ss6player-pixi)
 
-本リポジトリ作成への系譜を記した LOG を置いておきます。  
-本リポジトリ理解の際に参考になる…かもしれません。  
-[制作過程LOG](https://aik0aaac.github.io/angela-desktopMascot/log)
-
 ## 環境構築手順
 
 1. SS6PlayerForWeb ライブラリのソースコードを導入
